@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech News Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .news-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .article {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: white;
+        }
+        .highlight {
+            border-left: 5px solid #3498db;
+            background-color: #f0f8ff;
+        }
+        .score {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .tags {
+            margin-top: 10px;
+            font-size: 0.8em;
+        }
+        .tag {
+            display: inline-block;
+            background-color: #e0e0e0;
+            padding: 2px 8px;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+        .last-updated {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tech News Analyzer</h1>
+        <p>AI-powered analysis of the latest tech news</p>
+        <div class="last-updated">
+            Last updated: {{ last_updated|datetimeformat }}
+        </div>
+    </header>
+
+    <h2 class="section-title">Highlights (Score ≥ 7)</h2>
+    <div class="news-container">
+        {% for article in highlights %}
+        <div class="article highlight">
+            <h3><a href="{{ article.link }}" target="_blank">{{ article.title }}</a></h3>
+            <p>{{ article.summary|truncate(200) }}</p>
+            <div class="score">Score: {{ article.score }}/10</div>
+            <div>
+                <strong>Why it matters:</strong>
+                <ul>
+                    {% for reason in article.reasons %}
+                    <li>{{ reason }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="tags">
+                {% for tag in article.tags %}
+                <span class="tag">{{ tag }}</span>
+                {% endfor %}
+            </div>
+            <div class="source">Source: {{ article.source }} • {{ article.published|datetimeformat }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2 class="section-title">All Tech News</h2>
+    <div class="news-container">
+        {% for article in articles %}
+        <div class="article">
+            <h3><a href="{{ article.link }}" target="_blank">{{ article.title }}</a></h3>
+            <p>{{ article.summary|truncate(150) }}</p>
+            <div class="score">Score: {{ article.score }}/10</div>
+            <div class="tags">
+                {% for tag in article.tags %}
+                <span class="tag">{{ tag }}</span>
+                {% endfor %}
+            </div>
+            <div class="source">Source: {{ article.source }} • {{ article.published|datetimeformat }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
